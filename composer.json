@@ -1,0 +1,39 @@
+{
+    "name": "yii1tech/i18n-fallback",
+    "description": "Provides support for Yii1 translation fallback to another message source",
+    "keywords": ["yii1", "i18n", "translation", "fallback", "language", "locale"],
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/yii1tech/i18n-fallback/issues",
+        "wiki": "https://github.com/yii1tech/i18n-fallback/wiki",
+        "source": "https://github.com/yii1tech/i18n-fallback"
+    },
+    "authors": [
+        {
+            "name": "Paul Klimov",
+            "email": "klimov.paul@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "yiisoft/yii": "~1.1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0 || ^9.3 || ^10.0.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "yii1tech\\i18n\\fallback\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "yii1tech\\i18n\\fallback\\test\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
