@@ -43,6 +43,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
                 'messages' => [
                     'class' => CPhpMessageSource::class,
                     'basePath' => __DIR__ . '/messages/main',
+                    'forceTranslation' => true,
                 ],
             ],
         ], $config));

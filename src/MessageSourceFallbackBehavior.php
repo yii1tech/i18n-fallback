@@ -23,6 +23,7 @@ use CBehavior;
  *                     'class' => yii1tech\i18n\fallback\MessageSourceFallbackBehavior::class,
  *                     'fallbackMessageSource' => [
  *                         'class' => CPhpMessageSource::class,
+ *                         'forceTranslation' => true,
  *                     ],
  *                 ],
  *             ],
