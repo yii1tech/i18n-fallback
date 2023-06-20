@@ -6,7 +6,7 @@
     <br>
 </p>
 
-This extension Provides support for Yii1 translation fallback to another message source.
+This extension provides support for Yii1 translation fallback to another message source.
 
 For license information check the [LICENSE](LICENSE.md)-file.
 

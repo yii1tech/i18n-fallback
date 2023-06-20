@@ -51,4 +51,22 @@ class MessageSourceFallbackBehaviorTest extends TestCase
         $this->assertSame('title-main-es', Yii::t('content', 'title'));
         $this->assertSame('description-main-en_us', Yii::t('content', 'description'));
     }
+
+    public function testFallbackToDifferentLanguageWithinSameMessageSource(): void
+    {
+        $this->attachMessageSourceBehavior([
+            'class' => MessageSourceFallbackBehavior::class,
+            'fallbackLanguage' => 'en_us',
+        ]);
+
+        /** @var \CMessageSource|MessageSourceFallbackBehavior $messageSource */
+        $messageSource = Yii::app()->getComponent('messages');
+
+        $this->assertSame($messageSource, $messageSource->getFallbackMessageSource());
+
+        Yii::app()->setLanguage('es');
+
+        $this->assertSame('title-main-es', Yii::t('content', 'title'));
+        $this->assertSame('unexisting', Yii::t('content', 'unexisting'));
+    }
 }

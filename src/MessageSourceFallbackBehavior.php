@@ -34,8 +34,8 @@ use CBehavior;
  * ];
  * ```
  *
- * @property \CMessageSource $owner
- * @property \CMessageSource|array $fallbackMessageSource fallback message source.
+ * @property \CMessageSource $owner the owner message source that this behavior is attached to.
+ * @property \CMessageSource|array|null $fallbackMessageSource fallback message source.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
@@ -43,9 +43,10 @@ use CBehavior;
 class MessageSourceFallbackBehavior extends CBehavior
 {
     /**
-     * @var \CMessageSource|array fallback message source or its array configuration.
+     * @var \CMessageSource|array|null fallback message source or its array configuration.
+     * If `null` - owner instance will be used.
      */
-    private $_fallbackMessageSource = [];
+    private $_fallbackMessageSource = null;
 
     /**
      * @var string|null language which should be used to retrieve missing language source.
@@ -56,7 +57,7 @@ class MessageSourceFallbackBehavior extends CBehavior
     /**
      * Sets the message source for the translation fallback.
      *
-     * @param \CMessageSource|array $fallbackMessageSource message source instance or its array configuration.
+     * @param \CMessageSource|array|null $fallbackMessageSource message source instance or its array configuration, `null` means owner instance usage.
      * @return static self reference.
      */
     public function setFallbackMessageSource($fallbackMessageSource): self
@@ -73,6 +74,10 @@ class MessageSourceFallbackBehavior extends CBehavior
      */
     public function getFallbackMessageSource()
     {
+        if ($this->_fallbackMessageSource === null) {
+            return $this->owner;
+        }
+
         if (!is_object($this->_fallbackMessageSource)) {
             $this->_fallbackMessageSource = $this->createFallbackMessageSource($this->_fallbackMessageSource);
         }
@@ -112,11 +117,13 @@ class MessageSourceFallbackBehavior extends CBehavior
      */
     public function missingTranslationHandler($event): void
     {
-        $language = $this->fallbackLanguage;
-        if ($language === null) {
-            $language = $event->language;
+        $language = $this->fallbackLanguage ?? $event->language;
+
+        $fallbackMessageSource = $this->getFallbackMessageSource();
+        if ($fallbackMessageSource === $event->sender && $language === $event->language) {
+            return; // avoid infinite recursion
         }
 
-        $event->message = $this->getFallbackMessageSource()->translate($event->category, $event->message, $language);
+        $event->message = $fallbackMessageSource->translate($event->category, $event->message, $language);
     }
 }
